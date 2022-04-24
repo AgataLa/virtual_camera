@@ -6,14 +6,12 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.io.IOException;
 import java.util.List;
 
@@ -29,8 +27,8 @@ public class VirtualCameraApp extends Application {
     private List<Rectangle> rectangles;
     private double d = 200;
     private double deltaTranslate = 20;
-    private double deltaRotate = 10;
-    private double deltaZoom = 10;
+    private double deltaRotate = 2;
+    private double deltaZoom = 5;
     private Transformation transformation;
 
     @Override
@@ -55,7 +53,7 @@ public class VirtualCameraApp extends Application {
         canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                switch(keyEvent.getCode()) {
+                switch (keyEvent.getCode()) {
                     case W:
                         transformation.translate(deltaTranslate, "z");
                         break;
@@ -109,11 +107,10 @@ public class VirtualCameraApp extends Application {
     }
 
 
-
     private void draw() {
         transformation.projection();
         gc.setFill(Color.ALICEBLUE);
-        gc.fillRect(0,0, canvas.getWidth(), canvas.getHeight());
+        gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setStroke(Color.MEDIUMSLATEBLUE);
         gc.beginPath();
         for (Rectangle r : rectangles) {
@@ -121,7 +118,7 @@ public class VirtualCameraApp extends Application {
             double xstart = 0;
             double ystart = 0;
             for (Point2D p : r.getPoints2D()) {
-                if(first) {
+                if (first) {
                     xstart = p.getX();
                     ystart = p.getY();
                     gc.moveTo(p.getX(), p.getY());
