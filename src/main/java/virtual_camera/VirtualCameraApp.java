@@ -9,6 +9,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import virtual_camera.geometry.Figure2D;
+import virtual_camera.geometry.Point2D;
+import virtual_camera.transformations.Transformation;
+import virtual_camera.utils.FileReader;
 
 import java.awt.*;
 import java.io.IOException;
@@ -28,83 +32,36 @@ public class VirtualCameraApp extends Application {
     private double deltaRotate = 2;
     private double deltaZoom = 5;
     private Transformation transformation;
+    private FileReader fileReader;
 
     @Override
     public void start(Stage stage) throws IOException {
         screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         WIDTH = screenSize.width;
         HEIGHT = screenSize.height;
+        middle_w = WIDTH * 3 / 8;
+        middle_h = HEIGHT * 3 / 8;
+
         stage.setTitle("Virtual Camera");
         stage.setResizable(false);
         Pane root = new Pane();
-        middle_w = WIDTH * 3 / 8;
-        middle_h = HEIGHT * 3 / 8;
+
         canvas = new Canvas(WIDTH * 3 / 4, HEIGHT * 3 / 4);
         gc = canvas.getGraphicsContext2D();
-        root.getChildren().add(canvas);
-        FileReader fileReader = new FileReader();
+
+        fileReader = new FileReader();
         figure2DS = fileReader.loadFigures2D();
+
         transformation = new Transformation(figure2DS);
 
+        root.getChildren().add(canvas);
         Scene scene = new Scene(root);
         stage.setScene(scene);
-        canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent keyEvent) {
-                switch (keyEvent.getCode()) {
-                    case W:
-                        transformation.translate(-deltaTranslate, "z"); //ruch - przód z
-                        break;
-                    case S:
-                        transformation.translate(deltaTranslate, "z"); //ruch - tył z
-                        break;
-                    case A:
-                        transformation.translate(deltaTranslate, "x"); //ruch - lewo x
-                        break;
-                    case D:
-                        transformation.translate(-deltaTranslate, "x"); //ruch - prawo x
-                        break;
-                    case Q:
-                        transformation.translate(-deltaTranslate, "y"); //ruch - góra y
-                        break;
-                    case E:
-                        transformation.translate(deltaTranslate, "y"); //ruch - dół y
-                        break;
-                    case R:
-                        transformation.rotate(-deltaRotate, "x"); //obrót - przód x
-                        break;
-                    case F:
-                        transformation.rotate(deltaRotate, "x"); //obrót - tył x
-                        break;
-                    case T:
-                        transformation.rotate(deltaRotate, "y"); //obrót - lewo y
-                        break;
-                    case G:
-                        transformation.rotate(-deltaRotate, "y"); //obrót - prawo y
-                        break;
-                    case Y:
-                        transformation.rotate(deltaRotate, "z"); //obrót - lewo z
-                        break;
-                    case H:
-                        transformation.rotate(-deltaRotate, "z"); //obrót - prawo z
-                        break;
-                    case Z:
-                        transformation.zoom(deltaZoom); //zoom in
-                        break;
-                    case X:
-                        transformation.zoom(-deltaZoom); //zoom out
-                        break;
-                    case SPACE:
-                        figure2DS = fileReader.loadFigures2D();
-                        transformation.changeFigures(figure2DS);
-                        transformation.setDist(DIST);
-                }
-                draw();
-            }
-        });
 
+        setUpKeyListener();
         canvas.requestFocus();
         draw();
+
         stage.show();
     }
 
@@ -146,6 +103,63 @@ public class VirtualCameraApp extends Application {
             gc.lineTo(xstart, ystart);
             gc.stroke();
         }
+    }
+
+    private void setUpKeyListener() {
+        canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                switch (keyEvent.getCode()) {
+                    case W:
+                        transformation.translate(-deltaTranslate, "z"); //ruch - przód z
+                        break;
+                    case S:
+                        transformation.translate(deltaTranslate, "z"); //ruch - tył z
+                        break;
+                    case A:
+                        transformation.translate(deltaTranslate, "x"); //ruch - lewo x
+                        break;
+                    case D:
+                        transformation.translate(-deltaTranslate, "x"); //ruch - prawo x
+                        break;
+                    case Q:
+                        transformation.translate(-deltaTranslate, "y"); //ruch - góra y
+                        break;
+                    case Z:
+                        transformation.translate(deltaTranslate, "y"); //ruch - dół y
+                        break;
+                    case R:
+                        transformation.rotate(-deltaRotate, "x"); //obrót - przód x
+                        break;
+                    case F:
+                        transformation.rotate(deltaRotate, "x"); //obrót - tył x
+                        break;
+                    case T:
+                        transformation.rotate(deltaRotate, "y"); //obrót - lewo y
+                        break;
+                    case Y:
+                        transformation.rotate(-deltaRotate, "y"); //obrót - prawo y
+                        break;
+                    case G:
+                        transformation.rotate(deltaRotate, "z"); //obrót - lewo z
+                        break;
+                    case H:
+                        transformation.rotate(-deltaRotate, "z"); //obrót - prawo z
+                        break;
+                    case E:
+                        transformation.zoom(deltaZoom); //zoom in
+                        break;
+                    case C:
+                        transformation.zoom(-deltaZoom); //zoom out
+                        break;
+                    case SPACE:
+                        figure2DS = fileReader.loadFigures2D();
+                        transformation.changeFigures(figure2DS);
+                        transformation.setDist(DIST);
+                }
+                draw();
+            }
+        });
     }
 
     public static void main(String[] args) {

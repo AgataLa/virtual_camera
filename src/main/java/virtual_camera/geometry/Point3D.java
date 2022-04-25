@@ -1,12 +1,14 @@
-package virtual_camera;
+package virtual_camera.geometry;
 
-public class Point2D {
+public class Point3D {
     private double x;
     private double y;
+    private double z;
 
-    public Point2D(double x, double y) {
+    public Point3D(double x, double y, double z) {
         this.x = x;
         this.y = y;
+        this.z = z;
     }
 
     public double getX() {
@@ -25,11 +27,20 @@ public class Point2D {
         this.y = y;
     }
 
+    public double getZ() {
+        return z;
+    }
+
+    public void setZ(double z) {
+        this.z = z;
+    }
+
     @Override
     public String toString() {
         return "Point{" +
                 "x=" + x +
                 ", y=" + y +
+                ", z=" + z +
                 '}';
     }
 }

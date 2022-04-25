@@ -1,4 +1,7 @@
-package virtual_camera;
+package virtual_camera.utils;
+
+import virtual_camera.geometry.Figure2D;
+import virtual_camera.geometry.Point3D;
 
 import java.io.BufferedReader;
 import java.io.File;

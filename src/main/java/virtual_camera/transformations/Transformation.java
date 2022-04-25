@@ -1,4 +1,8 @@
-package virtual_camera;
+package virtual_camera.transformations;
+
+import virtual_camera.geometry.Figure2D;
+import virtual_camera.geometry.Point2D;
+import virtual_camera.geometry.Point3D;
 
 import java.util.List;
 

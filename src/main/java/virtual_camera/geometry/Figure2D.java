@@ -1,4 +1,4 @@
-package virtual_camera;
+package virtual_camera.geometry;
 
 import java.util.ArrayList;
 import java.util.List;
