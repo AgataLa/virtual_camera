@@ -25,7 +25,6 @@ public class VirtualCameraApp extends Application {
     private Canvas canvas;
     private GraphicsContext gc;
     private List<Rectangle> rectangles;
-    private double d = 200;
     private double deltaTranslate = 20;
     private double deltaRotate = 2;
     private double deltaZoom = 5;
@@ -55,16 +54,16 @@ public class VirtualCameraApp extends Application {
             public void handle(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()) {
                     case W:
-                        transformation.translate(deltaTranslate, "z");
-                        break;
-                    case S:
                         transformation.translate(-deltaTranslate, "z");
                         break;
+                    case S:
+                        transformation.translate(deltaTranslate, "z");
+                        break;
                     case A:
-                        transformation.translate(-deltaTranslate, "x");
+                        transformation.translate(deltaTranslate, "x");
                         break;
                     case D:
-                        transformation.translate(deltaTranslate, "x");
+                        transformation.translate(-deltaTranslate, "x");
                         break;
                     case Q:
                         transformation.translate(deltaTranslate, "y");
@@ -96,19 +95,24 @@ public class VirtualCameraApp extends Application {
                     case X:
                         transformation.zoom(-deltaZoom); //zoom out
                         break;
+                    case SPACE:
+                        rectangles = fileReader.loadRectangles();
+                        transformation.changeRectangles(rectangles);
                 }
                 draw();
             }
         });
         timer = new MyAnimationTimer();
-        timer.start();
+        //timer.start();
         canvas.requestFocus();
+        draw();
         stage.show();
     }
 
 
     private void draw() {
         transformation.projection();
+
         gc.setFill(Color.ALICEBLUE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setStroke(Color.MEDIUMSLATEBLUE);
@@ -143,25 +147,6 @@ public class VirtualCameraApp extends Application {
         }
 
     }
-
-//    private double[] multMatrixAndVector(double[][] matrix, double[] vector) {
-//        double[] result = new double[4];
-//        for(int i = 0; i < vector.length; i++) {
-//            for(int j = 0; j < vector.length; j++) {
-//                result[i] += matrix[i][j]*vector[j];
-//            }
-//        }
-//        normalizeVector(result);
-//
-//        return result;
-//    }
-//
-//    private void normalizeVector(double[] vector) {
-//        double norm = vector[3];
-//        for(int i = 0; i < vector.length; i++) {
-//            vector[i] /= norm;
-//        }
-//    }
 
     public static void main(String[] args) {
         launch();

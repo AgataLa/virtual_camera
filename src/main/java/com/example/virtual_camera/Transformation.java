@@ -86,4 +86,9 @@ public class Transformation {
     public void setDist(double dist) {
         this.dist = dist;
     }
+
+    public void changeRectangles(List<Rectangle> rects) {
+        rectangles.clear();
+        rectangles.addAll(rects);
+    }
 }
