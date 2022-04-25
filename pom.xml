@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.example.virtual_camera/com.example.virtual_camera.VirtualCameraApp
+                            <mainClass>com.example.virtual_camera/virtual_camera.VirtualCameraApp
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>

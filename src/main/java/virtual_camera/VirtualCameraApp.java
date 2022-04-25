@@ -1,6 +1,5 @@
-package com.example.virtual_camera;
+package virtual_camera;
 
-import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -21,10 +20,10 @@ public class VirtualCameraApp extends Application {
     public static int HEIGHT;
     public static int middle_w;
     public static int middle_h;
-    private MyAnimationTimer timer;
+    public static int DIST = 300;
     private Canvas canvas;
     private GraphicsContext gc;
-    private List<Rectangle> rectangles;
+    private List<Figure2D> figure2DS;
     private double deltaTranslate = 20;
     private double deltaRotate = 2;
     private double deltaZoom = 5;
@@ -44,8 +43,8 @@ public class VirtualCameraApp extends Application {
         gc = canvas.getGraphicsContext2D();
         root.getChildren().add(canvas);
         FileReader fileReader = new FileReader();
-        rectangles = fileReader.loadRectangles();
-        transformation = new Transformation(rectangles);
+        figure2DS = fileReader.loadFigures2D();
+        transformation = new Transformation(figure2DS);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -54,28 +53,28 @@ public class VirtualCameraApp extends Application {
             public void handle(KeyEvent keyEvent) {
                 switch (keyEvent.getCode()) {
                     case W:
-                        transformation.translate(-deltaTranslate, "z");
+                        transformation.translate(-deltaTranslate, "z"); //ruch - przód z
                         break;
                     case S:
-                        transformation.translate(deltaTranslate, "z");
+                        transformation.translate(deltaTranslate, "z"); //ruch - tył z
                         break;
                     case A:
-                        transformation.translate(deltaTranslate, "x");
+                        transformation.translate(deltaTranslate, "x"); //ruch - lewo x
                         break;
                     case D:
-                        transformation.translate(-deltaTranslate, "x");
+                        transformation.translate(-deltaTranslate, "x"); //ruch - prawo x
                         break;
                     case Q:
-                        transformation.translate(deltaTranslate, "y");
+                        transformation.translate(-deltaTranslate, "y"); //ruch - góra y
                         break;
                     case E:
-                        transformation.translate(-deltaTranslate, "y");
+                        transformation.translate(deltaTranslate, "y"); //ruch - dół y
                         break;
                     case R:
-                        transformation.rotate(deltaRotate, "x"); //obrót - przód x
+                        transformation.rotate(-deltaRotate, "x"); //obrót - przód x
                         break;
                     case F:
-                        transformation.rotate(-deltaRotate, "x"); //obrót - tył x
+                        transformation.rotate(deltaRotate, "x"); //obrót - tył x
                         break;
                     case T:
                         transformation.rotate(deltaRotate, "y"); //obrót - lewo y
@@ -84,7 +83,7 @@ public class VirtualCameraApp extends Application {
                         transformation.rotate(-deltaRotate, "y"); //obrót - prawo y
                         break;
                     case Y:
-                        transformation.rotate(deltaRotate, "z");//obrót - lewo z
+                        transformation.rotate(deltaRotate, "z"); //obrót - lewo z
                         break;
                     case H:
                         transformation.rotate(-deltaRotate, "z"); //obrót - prawo z
@@ -96,31 +95,43 @@ public class VirtualCameraApp extends Application {
                         transformation.zoom(-deltaZoom); //zoom out
                         break;
                     case SPACE:
-                        rectangles = fileReader.loadRectangles();
-                        transformation.changeRectangles(rectangles);
+                        figure2DS = fileReader.loadFigures2D();
+                        transformation.changeFigures(figure2DS);
+                        transformation.setDist(DIST);
                 }
                 draw();
             }
         });
-        timer = new MyAnimationTimer();
-        //timer.start();
+
         canvas.requestFocus();
         draw();
         stage.show();
     }
 
-
     private void draw() {
         transformation.projection();
 
+        boolean third = false;
         gc.setFill(Color.ALICEBLUE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setStroke(Color.MEDIUMSLATEBLUE);
         gc.beginPath();
-        for (Rectangle r : rectangles) {
+        for (Figure2D r : figure2DS) {
             boolean first = true;
             double xstart = 0;
             double ystart = 0;
+
+            if(r.getPoints2D().size() == 3 && !third) {
+                gc.stroke();
+                gc.beginPath();
+                gc.setStroke(Color.CHOCOLATE);
+                third = true;
+            } else if(r.getPoints2D().size() == 4 && third) {
+                gc.stroke();
+                gc.beginPath();
+                gc.setStroke(Color.GREEN);
+            }
+
             for (Point2D p : r.getPoints2D()) {
                 if (first) {
                     xstart = p.getX();
@@ -131,21 +142,10 @@ public class VirtualCameraApp extends Application {
                     gc.lineTo(p.getX(), p.getY());
                 }
             }
+
             gc.lineTo(xstart, ystart);
             gc.stroke();
         }
-    }
-
-    private class MyAnimationTimer extends AnimationTimer {
-
-        public MyAnimationTimer() {
-        }
-
-        @Override
-        public void handle(long l) {
-            draw();
-        }
-
     }
 
     public static void main(String[] args) {

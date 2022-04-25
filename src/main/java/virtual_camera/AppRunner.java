@@ -1,4 +1,4 @@
-package com.example.virtual_camera;
+package virtual_camera;
 
 public class AppRunner {
 

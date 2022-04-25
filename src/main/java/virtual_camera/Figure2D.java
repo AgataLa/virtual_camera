@@ -1,13 +1,13 @@
-package com.example.virtual_camera;
+package virtual_camera;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Rectangle {
+public class Figure2D {
     private List<Point3D> points3D;
     private List<Point2D> points2D;
 
-    public Rectangle() {
+    public Figure2D() {
         points3D = new ArrayList<>();
         points2D = new ArrayList<>();
     }
@@ -26,7 +26,7 @@ public class Rectangle {
 
     @Override
     public String toString() {
-        return "Rectangle{" +
+        return "Figure2D{" +
                 "points=" + points3D +
                 '}';
     }
