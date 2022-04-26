@@ -24,7 +24,7 @@ public class VirtualCameraApp extends Application {
     public static int HEIGHT;
     public static int middle_w;
     public static int middle_h;
-    public static int DIST = 500;
+    public static int DIST = 1000;
     private Canvas canvas;
     private GraphicsContext gc;
     private List<Figure2D> figure2DS;
