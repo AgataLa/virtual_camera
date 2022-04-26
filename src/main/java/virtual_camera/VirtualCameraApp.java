@@ -24,13 +24,13 @@ public class VirtualCameraApp extends Application {
     public static int HEIGHT;
     public static int middle_w;
     public static int middle_h;
-    public static int DIST = 300;
+    public static int DIST = 500;
     private Canvas canvas;
     private GraphicsContext gc;
     private List<Figure2D> figure2DS;
-    private double deltaTranslate = 20;
-    private double deltaRotate = 2;
-    private double deltaZoom = 5;
+    private final double deltaTranslate = 20;
+    private final double deltaRotate = 2;
+    private final double deltaZoom = 5;
     private Transformation transformation;
     private FileReader fileReader;
 
