@@ -23,9 +23,8 @@ public class Transformation {
         for (Figure2D fig : figure2DS) {
             fig.getPoints2D().clear();
             for (Point3D point3D : fig.getPoints3D()) {
-                System.out.println(point3D.getZ());
-                x = point3D.getX() * dist / (point3D.getZ() > 0 ? point3D.getZ() : 0.01);
-                y = point3D.getY() * dist / (point3D.getZ() > 0 ? point3D.getZ() : 0.01);
+                x = point3D.getX() * dist / (point3D.getZ() > 0 ? point3D.getZ() : 0.001);
+                y = point3D.getY() * dist / (point3D.getZ() > 0 ? point3D.getZ() : 0.001);
                 point2D = new Point2D(x + middle_w, -y + middle_h);
                 fig.getPoints2D().add(point2D);
             }
