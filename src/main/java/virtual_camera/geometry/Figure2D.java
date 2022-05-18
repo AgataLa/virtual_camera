@@ -22,20 +22,12 @@ public class Figure2D {
         plane = new double[4];
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getId() {
-        return id;
-    }
-
     public void initXYArrays(int size) {
         xp = new double[size];
         yp = new double[size];
     }
 
-    public void update2DData() {
+    public void updateBoundingBox() {
         for(int i = 0; i < xp.length; i++) {
             xp[i] = points2D.get(i).getX();
             yp[i] = points2D.get(i).getY();
@@ -61,14 +53,14 @@ public class Figure2D {
         b[0] = points3D.get(2).getX() - points3D.get(1).getX();
         b[1] = points3D.get(2).getY() - points3D.get(1).getY();
         b[2] = points3D.get(2).getZ() - points3D.get(1).getZ();
-        
+
         plane[0] = a[1]*b[2] - a[2]*b[1];
         plane[1] = a[2]*b[0] - a[0]*b[2];
         plane[2] = a[0]*b[1] - a[1]*b[0];
         plane[3] = -plane[0]*points3D.get(0).getX() - plane[1]*points3D.get(0).getY() - plane[2]*points3D.get(0).getZ();
     }
 
-    public double checkMaxDistanceFromObservator() {
+    public double checkMaxDistanceFromObserver() {
         double max = Integer.MIN_VALUE;
         double dist;
         for(Point3D p: points3D) {
@@ -87,29 +79,17 @@ public class Figure2D {
     }
 
     public int checkIfIsInFrontOf(Figure2D otherFigure) {
-        //System.out.println(id + " checkIfIsInFrontOf " + otherFigure.id);
         double side;
         boolean isInFrontOf = false;
         boolean first = true;
         boolean commonPoint = false;
 
         if(isPlaneTheSame(otherFigure.plane)) {
-            //System.out.println("Same plane");
             return -1;
-//            double[] zthis = getSortedZ();
-//            double[] zother = getSortedZ();
-//            for(int i = zthis.length-1; i >= 0; i--) {
-//                if(zthis[i] < zother[i]) {
-//                    return 1;
-//                } else if(zthis[i] > zother[i]) {
-//                    return -1;
-//                }
-//            }
-//            return checkWhichFiguresXIsLower(otherFigure);
         }
 
         boolean origin = plane[3] < 0;
-        //System.out.println("Origin " + origin);
+
         for(Point3D p: otherFigure.points3D) {
             for(Point3D p3d: points3D) {
                 if(p3d.equals(p)) {
@@ -129,12 +109,6 @@ public class Figure2D {
                     first = false;
                 } else {
                     if (isInFrontOf != side < 0) {
-                        //System.out.println(this.getId() + " " + otherFigure.getId());
-                        //System.out.println(side + " " + plane[3]);
-//                        if(checkMinDistanceFromObservator() < otherFigure.checkMinDistanceFromObservator()) {
-//                            return -1;
-//                        }
-//                        return 1;
                         return 0;
                     }
                 }
@@ -152,14 +126,6 @@ public class Figure2D {
         return true;
     }
 
-    public double[] getXp() {
-        return xp;
-    }
-
-    public double[] getYp() {
-        return yp;
-    }
-
     public double[] getSortedZ() {
         double[] zz = new double[points3D.size()];
         for(int i = 0; i < zz.length; i++) {
@@ -173,12 +139,24 @@ public class Figure2D {
         return getSortedZ()[getSortedZ().length-1];
     }
 
-    public double getMaxZ() {
-        return getSortedZ()[0];
-    }
-
     public void addPoint(Point3D point) {
         points3D.add(point);
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public double[] getXp() {
+        return xp;
+    }
+
+    public double[] getYp() {
+        return yp;
     }
 
     public List<Point3D> getPoints3D() {

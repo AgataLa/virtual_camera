@@ -28,7 +28,7 @@ public class Transformation {
                 point2D = new Point2D(x + middle_w, -y + middle_h);
                 fig.getPoints2D().add(point2D);
             }
-            fig.update2DData();
+            fig.updateBoundingBox();
             fig.determinePlane();
         }
     }

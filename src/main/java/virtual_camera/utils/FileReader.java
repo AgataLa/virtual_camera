@@ -38,6 +38,7 @@ public class FileReader {
                 }
                 int color = Integer.parseInt(lineSplit[lineSplit.length-2].trim());
                 String id = lineSplit[lineSplit.length-2].trim() + lineSplit[lineSplit.length-1].trim();
+
                 figure2D.setColor(colorsFill.get(color % colorsFill.size()));
                 figure2D.initXYArrays(lineSplit.length - 2);
                 figure2D.determinePlane();
