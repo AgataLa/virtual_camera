@@ -3,7 +3,6 @@ module com.example.virtual_camera {
     requires javafx.fxml;
     requires java.desktop;
 
-
     opens virtual_camera to javafx.fxml;
     exports virtual_camera;
     exports virtual_camera.geometry;

@@ -9,7 +9,7 @@ import java.util.List;
 import static virtual_camera.VirtualCameraApp.*;
 
 public class Transformation {
-    private double dist;
+    private int dist;
     private List<Figure2D> figure2DS;
 
     public Transformation(List<Figure2D> figure2DS) {
@@ -28,10 +28,12 @@ public class Transformation {
                 point2D = new Point2D(x + middle_w, -y + middle_h);
                 fig.getPoints2D().add(point2D);
             }
+            fig.update2DData();
+            fig.determinePlane();
         }
     }
 
-    public void translate(double delta, String axis) {
+    public void translate(int delta, String axis) {
         for (Figure2D fig : figure2DS) {
             for (Point3D point3D : fig.getPoints3D()) {
                 switch (axis) {
@@ -75,18 +77,18 @@ public class Transformation {
         }
     }
 
-    public void zoom(double delta) {
+    public void zoom(int delta) {
         dist += delta;
         if (dist < 0) {
             dist = 0;
         }
     }
 
-    public double getDist() {
+    public int getDist() {
         return dist;
     }
 
-    public void setDist(double dist) {
+    public void setDist(int dist) {
         this.dist = dist;
     }
 

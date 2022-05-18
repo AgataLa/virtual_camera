@@ -1,5 +1,7 @@
 package virtual_camera.geometry;
 
+import java.util.Objects;
+
 public class Point3D {
     private double x;
     private double y;
@@ -42,5 +44,18 @@ public class Point3D {
                 ", y=" + y +
                 ", z=" + z +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Point3D point3D = (Point3D) o;
+        return Double.compare(point3D.x, x) == 0 && Double.compare(point3D.y, y) == 0 && Double.compare(point3D.z, z) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y, z);
     }
 }
